@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { SiteFooter } from "../components/site-footer";
 import { SubpageHeader } from "../components/subpage-header";
-import { LocalContentBoard } from "../components/local-content-board";
+import { SharedContentBoard } from "../components/shared-content-board";
 import { assetPaths, toyFriends } from "../content/site-content";
 
 export const metadata: Metadata = {
@@ -45,15 +45,12 @@ export default function CharactersPage() {
         </div>
       </section>
 
-      <LocalContentBoard
+      <SharedContentBoard
         kind="characters"
-        eyebrow="ADD A CHARACTER"
-        title="添加新的玩偶"
-        description="可以补充新的卡通角色、玩偶名字和照片，内容只保存在当前设备。"
-        primaryLabel="角色或玩偶名字"
-        secondaryLabel="角色标签"
-        noteLabel="为什么喜欢"
-        emptyText="还没有添加新的玩偶"
+        eyebrow="MORE CHARACTERS"
+        title="继续扩大的收藏"
+        description="站长和协作者可以从统一后台补充新的卡通角色、玩偶名字和真实照片。"
+        emptyText="后台还没有添加新的玩偶。"
         accent="#ff8fb1"
       />
 

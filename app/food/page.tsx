@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { LocalContentBoard } from "../components/local-content-board";
+import { SharedContentBoard } from "../components/shared-content-board";
 import { SiteFooter } from "../components/site-footer";
 import { SubpageHeader } from "../components/subpage-header";
 
@@ -42,15 +42,12 @@ export default function FoodPage() {
         </div>
       </section>
 
-      <LocalContentBoard
+      <SharedContentBoard
         kind="food"
-        eyebrow="ADD A FOOD NOTE"
-        title="添加新的好吃记录"
-        description="把新发现的食物、店名、口味和照片保存在当前设备的清单里。"
-        primaryLabel="食物或店名"
-        secondaryLabel="口味或分类"
-        noteLabel="好吃备注"
-        emptyText="还没有添加新的好吃记录"
+        eyebrow="MORE FOOD NOTES"
+        title="新发现的好吃记录"
+        description="从统一后台发布食物、店名、口味、好吃备注和真实照片。"
+        emptyText="后台还没有添加新的好吃记录。"
         accent="#72d6a5"
       />
 

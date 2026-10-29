@@ -10,6 +10,7 @@ export function SiteHeader() {
         {navItems.map((item) => (
           <a key={item.href} href={item.href}>{item.label}</a>
         ))}
+        <a href="/admin/">编辑后台</a>
       </div>
       <span className="age-pill">YUY FIRST</span>
     </nav>
