@@ -13,15 +13,15 @@ export default function AlbumPage() {
   return (
     <main className="subpage album-page-route">
       <SubpageHeader
-        label="03 / PHOTO ALBUM"
+        label="04 / PHOTO ALBUM"
         title="私人照片簿"
         description="选择照片后会在当前设备生成私人照片墙，不会自动上传到公开网络。"
       />
       <AlbumUploader />
       <PhotoAlbum />
       <nav className="next-page-actions" aria-label="继续浏览">
+        <a href="/food/"><span>BACK 03</span>← 返回好吃清单</a>
         <a href="/characters/"><span>BACK 01</span>← 返回玩偶图鉴</a>
-        <a href="/drinks/"><span>BACK 02</span>← 返回奶茶地图</a>
       </nav>
       <SiteFooter />
     </main>

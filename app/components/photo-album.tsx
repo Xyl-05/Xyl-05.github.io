@@ -31,7 +31,7 @@ export function PhotoAlbum() {
   return (
     <section className="album-section" id="album">
       <div className="album-heading">
-        <div><span>03 / PHOTO ALBUM</span><h2>翻一翻，<br />妍的照片簿</h2></div>
+        <div><span>04 / PHOTO ALBUM</span><h2>翻一翻，<br />妍的照片簿</h2></div>
         <p>点击左右按钮，或者用键盘方向键翻页。<br /><a className="text-link" href="/album/">进入照片簿上传自己的照片 →</a></p>
       </div>
 

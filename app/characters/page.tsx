@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { SiteFooter } from "../components/site-footer";
 import { SubpageHeader } from "../components/subpage-header";
+import { LocalContentBoard } from "../components/local-content-board";
 import { assetPaths, toyFriends } from "../content/site-content";
 
 export const metadata: Metadata = {
@@ -44,9 +45,21 @@ export default function CharactersPage() {
         </div>
       </section>
 
+      <LocalContentBoard
+        kind="characters"
+        eyebrow="ADD A CHARACTER"
+        title="添加新的玩偶"
+        description="可以补充新的卡通角色、玩偶名字和照片，内容只保存在当前设备。"
+        primaryLabel="角色或玩偶名字"
+        secondaryLabel="角色标签"
+        noteLabel="为什么喜欢"
+        emptyText="还没有添加新的玩偶"
+        accent="#ff8fb1"
+      />
+
       <nav className="next-page-actions" aria-label="继续浏览">
         <a href="/drinks/"><span>NEXT 02</span>去看奶茶地图 →</a>
-        <a href="/album/"><span>NEXT 03</span>打开照片簿 →</a>
+        <a href="/food/"><span>NEXT 03</span>打开好吃清单 →</a>
       </nav>
       <SiteFooter />
     </main>

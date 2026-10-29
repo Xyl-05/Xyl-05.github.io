@@ -8,6 +8,7 @@ export const navItems = [
   { label: "首页", href: "/" },
   { label: "玩偶图鉴", href: "/characters/" },
   { label: "奶茶地图", href: "/drinks/" },
+  { label: "好吃清单", href: "/food/" },
   { label: "照片簿", href: "/album/" },
 ] as const;
 
@@ -33,7 +34,7 @@ export const categories = [
     label: "FOOD NOTES",
     title: "好吃清单",
     description: "喜欢探索好多好吃的，但香菜和芹菜要坚定地说 NO。",
-    href: "/#food",
+    href: "/food/",
     className: "category-green",
   },
   {

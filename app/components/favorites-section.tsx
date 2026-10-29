@@ -48,6 +48,7 @@ export function FavoritesSection() {
             <h3>好吃雷达</h3>
             <p className="big-copy">好多好吃的<br /><em>都喜欢！</em></p>
             <div className="no-list"><span>香菜 NO</span><span>芹菜 NO</span></div>
+            <a className="mini-action" href="/food/">打开好吃清单 →</a>
           </div>
         </article>
 

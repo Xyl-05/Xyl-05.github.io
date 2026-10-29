@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import type { CSSProperties } from "react";
 import { SiteFooter } from "../components/site-footer";
 import { SubpageHeader } from "../components/subpage-header";
+import { LocalContentBoard } from "../components/local-content-board";
 import { teaBrands } from "../content/site-content";
 
 export const metadata: Metadata = {
@@ -55,9 +56,21 @@ export default function DrinksPage() {
         <p>点单时先看茶底和清爽度，茉莉奶绿是明确喜欢的方向。</p>
       </aside>
 
+      <LocalContentBoard
+        kind="drinks"
+        eyebrow="ADD A DRINK"
+        title="添加奶茶记录"
+        description="看到新的品牌或喝到喜欢的单品时，可以连同照片一起收进当前设备。"
+        primaryLabel="奶茶品牌"
+        secondaryLabel="单品或口味"
+        noteLabel="喝后感"
+        emptyText="还没有添加新的奶茶记录"
+        accent="#b9a7ff"
+      />
+
       <nav className="next-page-actions" aria-label="继续浏览">
         <a href="/characters/"><span>BACK 01</span>← 返回玩偶图鉴</a>
-        <a href="/album/"><span>NEXT 03</span>打开照片簿 →</a>
+        <a href="/food/"><span>NEXT 03</span>打开好吃清单 →</a>
       </nav>
       <SiteFooter />
     </main>
