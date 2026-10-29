@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://xyl-05.github.io"),
+  metadataBase: new URL("https://yans-cute-club.rich-amber-6795.chatgpt.site"),
   title: "妍的可爱宇宙 | YAN'S CLUB",
   description: "关于妍、YUY、波点、拍照和奶茶偏好的个人 IP 收藏册。",
   icons: {
