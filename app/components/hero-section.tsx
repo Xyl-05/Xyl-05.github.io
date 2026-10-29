@@ -4,7 +4,7 @@ export function HeroSection() {
   return (
     <section className="hero" id="top">
       <div className="hero-copy">
-        <span className="eyebrow">MEET THE GIRL · VOL. 20</span>
+        <span className="eyebrow">PERSONAL IP · YUY FIRST</span>
         <h1><span>妍</span>的<br />可爱宇宙</h1>
         <p className="intro">爱拍照、爱波点，也爱收集生活里那些<br className="desktop" />不经意的小惊喜。</p>
         <a className="hero-button" href="#categories">进入她的宇宙 <b>↘</b></a>

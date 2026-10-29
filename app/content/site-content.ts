@@ -5,10 +5,10 @@ export const assetPaths = {
 } as const;
 
 export const navItems = [
-  { label: "分类目录", href: "#categories" },
-  { label: "玩偶收藏", href: "#toys" },
-  { label: "奶茶地图", href: "#drinks" },
-  { label: "翻页相册", href: "#album" },
+  { label: "首页", href: "/" },
+  { label: "玩偶图鉴", href: "/characters/" },
+  { label: "奶茶地图", href: "/drinks/" },
+  { label: "照片簿", href: "/album/" },
 ] as const;
 
 export const categories = [
@@ -17,7 +17,7 @@ export const categories = [
     label: "CHARACTERS",
     title: "玩偶图鉴",
     description: "YUY 是绝对主角，轻松熊、萌趣趣、Hello Kitty 和玉桂狗是可爱朋友。",
-    href: "#toys",
+    href: "/characters/",
     className: "category-pink",
   },
   {
@@ -25,7 +25,7 @@ export const categories = [
     label: "MILK TEA",
     title: "奶茶地图",
     description: "喜茶排在第一位，也喜欢爷爷不泡茶和古茗。",
-    href: "#drinks",
+    href: "/drinks/",
     className: "category-purple",
   },
   {
@@ -33,7 +33,7 @@ export const categories = [
     label: "FOOD NOTES",
     title: "好吃清单",
     description: "喜欢探索好多好吃的，但香菜和芹菜要坚定地说 NO。",
-    href: "#food",
+    href: "/#food",
     className: "category-green",
   },
   {
@@ -41,7 +41,7 @@ export const categories = [
     label: "PHOTO DAYS",
     title: "拍照相册",
     description: "用翻页相册收集普通日子里闪闪发光的照片。",
-    href: "#album",
+    href: "/album/",
     className: "category-yellow",
   },
 ] as const;
@@ -75,18 +75,30 @@ export const teaBrands = [
     image: "/images/brands/heytea.jpg",
     alt: "喜茶饮品实拍",
     favorite: true,
+    rank: "NO.1",
+    drink: "最喜欢的品牌",
+    note: "清爽茶香和轻盈口感，是奶茶雷达里永远的第一位。",
+    color: "#ff8fb1",
   },
   {
     name: "爷爷不泡茶",
     image: "/images/brands/yeye-tea.png",
     alt: "爷爷不泡茶官方饮品图",
     favorite: false,
+    rank: "PICK 02",
+    drink: "茉莉奶绿",
+    note: "茉莉香气和奶感刚刚好，适合想要温柔一点的下午。",
+    color: "#84c9a2",
   },
   {
     name: "古茗",
     image: "/images/brands/guming.jpg",
     alt: "古茗饮品实拍",
     favorite: false,
+    rank: "PICK 03",
+    drink: "日常候选",
+    note: "路过时会想看一眼菜单，是稳定进入候选区的品牌。",
+    color: "#ffd84c",
   },
 ] as const;
 
