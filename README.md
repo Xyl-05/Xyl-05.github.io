@@ -15,6 +15,15 @@ npm run dev
 
 推送到 `main` 后，GitHub Actions 会运行 `npm run build:pages` 并自动发布。
 
+## 内容框架
+
+- `app/components/`：导航、首屏、分类入口、玩偶、偏好、相册和页尾模块
+- `app/content/site-content.ts`：统一管理文字、分类、品牌、玩偶和相册数据
+- `public/images/characters/`：YUY 与其他卡通角色图片
+- `public/images/brands/`：奶茶品牌图片
+- `public/images/album/`：翻页相册图片
+- `public/images/social/`：网站分享封面
+
 ---
 
 ## Starter notes

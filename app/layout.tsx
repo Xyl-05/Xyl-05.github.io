@@ -17,21 +17,21 @@ export const metadata: Metadata = {
   title: "妍的可爱宇宙 | YAN'S CLUB",
   description: "关于妍、YUY、波点、拍照和奶茶偏好的个人 IP 收藏册。",
   icons: {
-    icon: "/yuy-art-main.png",
-    shortcut: "/yuy-art-main.png",
+    icon: "/images/characters/yuy/yuy-main.png",
+    shortcut: "/images/characters/yuy/yuy-main.png",
   },
   openGraph: {
     title: "妍的可爱宇宙",
     description: "YUY、波点、相册与快乐日常——欢迎来到妍的可爱宇宙。",
     type: "website",
     locale: "zh_CN",
-    images: [{ url: "/og.png", width: 1200, height: 630, alt: "妍的可爱宇宙" }],
+    images: [{ url: "/images/social/og.png", width: 1200, height: 630, alt: "妍的可爱宇宙" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "妍的可爱宇宙",
     description: "YUY、波点、相册与快乐日常。",
-    images: ["/og.png"],
+    images: ["/images/social/og.png"],
   },
 };
 
