@@ -2,7 +2,7 @@
 
 以 YUY 为主角，收录玩偶、奶茶、拍照与翻页相册元素的个人 IP 网站。
 
-线上地址：<https://ishag0.github.io>
+线上地址：<https://xyl-05.github.io>
 
 ## 本地预览
 
