@@ -28,11 +28,20 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - uses: actions/checkout@v4
+      - name: Check out the accessible static edition
+        uses: actions/checkout@v4
+        with:
+          ref: b65988acf3a90bb9cbf580d9a59c9f75fade0b6d
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build:pages
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: github-pages-redirect
-      - name: Deploy redirect
+          path: out
+      - name: Deploy accessible site
         id: deployment
         uses: actions/deploy-pages@v4
