@@ -4,6 +4,10 @@
 
 线上地址：<https://xyl-05.github.io>
 
+网站管理入口：<https://xyl-05.github.io/admin/>
+
+公开站点由 `codex/github-pages` 分支自动发布。站长和仓库协作者可从管理入口修改内容、上传照片与查看发布进度。
+
 ## 本地预览
 
 ```bash
