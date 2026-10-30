@@ -216,7 +216,7 @@ export function AdminDashboard({
       <main className="admin-shell">
         <header className="admin-topbar">
           <a className="logo" href="/"><span>妍</span> YAN&apos;S CLUB</a>
-          <a href="/signout-with-chatgpt?return_to=/">退出登录</a>
+          <a href="/api/admin/logout">退出登录</a>
         </header>
         <section className="admin-gate">
           <span>EDITOR ACCESS</span>
@@ -243,7 +243,7 @@ export function AdminDashboard({
       <header className="admin-topbar">
         <a className="logo" href="/"><span>妍</span> YAN&apos;S CLUB</a>
         <div><b>{access.displayName}</b><span>{access.role === "owner" ? "站长" : "协作者"}</span></div>
-        <nav><a href="/">查看网站</a><a href="/signout-with-chatgpt?return_to=/">退出</a></nav>
+        <nav><a href="/">查看网站</a><a href="/api/admin/logout">退出</a></nav>
       </header>
 
       <section className="admin-hero">
@@ -294,7 +294,7 @@ export function AdminDashboard({
 
       {access.role === "owner" && (
         <section className="admin-team">
-          <div className="admin-section-heading"><span>TEAM ACCESS</span><h2>协作者权限</h2><p>输入朋友登录 ChatGPT 使用的邮箱。对方登录后台后即可编辑全部分类。</p></div>
+          <div className="admin-section-heading"><span>TEAM ACCESS</span><h2>协作者权限</h2><p>输入朋友的邮箱。对方使用这个邮箱和后台访问码登录后，即可编辑全部分类。</p></div>
           <form onSubmit={invite}><input type="email" value={inviteEmail} onChange={(event) => setInviteEmail(event.target.value)} placeholder="朋友的邮箱" required /><button type="submit">＋ 邀请协作者</button></form>
           <div className="admin-team-list">
             {team.map((member) => <article key={member.email}><div><b>{member.displayName}</b><span>{member.email}</span></div><em>{member.role === "owner" ? "站长" : "协作者"}</em>{member.role !== "owner" && <button onClick={() => void removeEditor(member.email)}>移除</button>}</article>)}

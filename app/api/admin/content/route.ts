@@ -1,13 +1,15 @@
-import { desc, eq } from "drizzle-orm";
-import { getDb } from "../../../../db";
-import { contentItems } from "../../../../db/schema";
 import { apiAuthError, getApiEditor } from "../../../../lib/api-auth";
 import {
   cleanText,
   isContentKind,
   safeImageName,
 } from "../../../../lib/content";
-import { getMediaBucket } from "../../../../lib/media";
+import {
+  deleteMedia,
+  readSiteState,
+  uploadMedia,
+  writeSiteState,
+} from "../../../../lib/site-store";
 
 export const dynamic = "force-dynamic";
 const MAX_IMAGE_SIZE = 12 * 1024 * 1024;
@@ -20,11 +22,10 @@ export async function GET(request: Request) {
   if (!isContentKind(kind)) {
     return Response.json({ error: "内容分类不正确" }, { status: 400 });
   }
-  const items = await getDb()
-    .select()
-    .from(contentItems)
-    .where(eq(contentItems.kind, kind))
-    .orderBy(desc(contentItems.updatedAt));
+  const state = await readSiteState();
+  const items = state.contentItems
+    .filter((item) => item.kind === kind)
+    .sort((a, b) => b.updatedAt - a.updatedAt);
   return Response.json({ items });
 }
 
@@ -56,10 +57,7 @@ export async function POST(request: Request) {
     if (image instanceof File && image.size) {
       imageName = safeImageName(image.name);
       imageKey = `${id}-${imageName}`;
-      await getMediaBucket().put(imageKey, await image.arrayBuffer(), {
-        httpMetadata: { contentType: image.type },
-        customMetadata: { originalName: image.name },
-      });
+      await uploadMedia(imageKey, image);
     }
 
     const now = Date.now();
@@ -75,10 +73,14 @@ export async function POST(request: Request) {
       createdAt: now,
       updatedAt: now,
     };
-    await getDb().insert(contentItems).values(item);
+    const state = await readSiteState();
+    state.contentItems.push(item);
+    await writeSiteState(state);
     return Response.json({ item }, { status: 201 });
   } catch (error) {
-    if (imageKey) await getMediaBucket().delete(imageKey).catch(() => undefined);
+    if (imageKey) {
+      await deleteMedia(imageKey).catch(() => undefined);
+    }
     console.error(error);
     return Response.json({ error: "保存失败，请稍后再试" }, { status: 500 });
   }

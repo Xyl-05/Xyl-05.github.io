@@ -1,8 +1,5 @@
-import { and, count, eq, or } from "drizzle-orm";
-import type { ChatGPTUser } from "../app/chatgpt-auth";
-import { getDb } from "../db";
-import { editorInvites, editors } from "../db/schema";
-import { getInitialOwnerEmail } from "./media";
+import type { AdminIdentity } from "./admin-session";
+import { readSiteState, writeSiteState } from "./site-store";
 
 export type EditorRole = "owner" | "editor";
 
@@ -14,36 +11,27 @@ export type EditorAccess = {
 };
 
 export async function hasOwner() {
-  const db = getDb();
-  const [result] = await db
-    .select({ value: count() })
-    .from(editors)
-    .where(eq(editors.role, "owner"));
-  return (result?.value ?? 0) > 0;
+  const state = await readSiteState();
+  return state.editors.some((editor) => editor.role === "owner");
 }
 
 export async function resolveEditor(
-  user: ChatGPTUser,
+  user: AdminIdentity,
 ): Promise<EditorAccess | null> {
-  const db = getDb();
+  const state = await readSiteState();
   const normalizedEmail = user.email.trim().toLowerCase();
-  const [existing] = await db
-    .select()
-    .from(editors)
-    .where(
-      or(eq(editors.userId, user.userId), eq(editors.email, normalizedEmail)),
-    )
-    .limit(1);
+  const existing = state.editors.find(
+    (editor) => editor.userId === user.userId || editor.email === normalizedEmail,
+  );
 
   if (existing) {
     if (
       existing.userId !== user.userId ||
       existing.displayName !== user.displayName
     ) {
-      await db
-        .update(editors)
-        .set({ userId: user.userId, displayName: user.displayName })
-        .where(eq(editors.email, normalizedEmail));
+      existing.userId = user.userId;
+      existing.displayName = user.displayName;
+      await writeSiteState(state);
     }
     return {
       userId: user.userId,
@@ -53,21 +41,10 @@ export async function resolveEditor(
     };
   }
 
-  if (
-    normalizedEmail === getInitialOwnerEmail() &&
-    !(await hasOwner())
-  ) {
-    return createFirstOwner(user);
-  }
-
-  const [invite] = await db
-    .select()
-    .from(editorInvites)
-    .where(eq(editorInvites.email, normalizedEmail))
-    .limit(1);
+  const invite = state.editorInvites.find((entry) => entry.email === normalizedEmail);
   if (!invite) return null;
 
-  await db.insert(editors).values({
+  state.editors.push({
     userId: user.userId,
     email: normalizedEmail,
     displayName: user.displayName,
@@ -75,14 +52,8 @@ export async function resolveEditor(
     invitedBy: invite.invitedBy,
     createdAt: Date.now(),
   });
-  await db
-    .delete(editorInvites)
-    .where(
-      and(
-        eq(editorInvites.email, normalizedEmail),
-        eq(editorInvites.invitedBy, invite.invitedBy),
-      ),
-    );
+  state.editorInvites = state.editorInvites.filter((entry) => entry.email !== normalizedEmail);
+  await writeSiteState(state);
 
   return {
     userId: user.userId,
@@ -92,19 +63,20 @@ export async function resolveEditor(
   };
 }
 
-export async function createFirstOwner(user: ChatGPTUser) {
-  if (await hasOwner()) return null;
-  const db = getDb();
+export async function createFirstOwner(user: AdminIdentity) {
+  const state = await readSiteState();
+  if (state.editors.some((editor) => editor.role === "owner")) return null;
   const owner: EditorAccess = {
     userId: user.userId,
     email: user.email.trim().toLowerCase(),
     displayName: user.displayName,
     role: "owner",
   };
-  await db.insert(editors).values({
+  state.editors.push({
     ...owner,
     invitedBy: null,
     createdAt: Date.now(),
   });
+  await writeSiteState(state);
   return owner;
 }

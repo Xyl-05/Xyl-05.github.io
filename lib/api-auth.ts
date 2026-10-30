@@ -1,8 +1,8 @@
-import { getChatGPTUser } from "../app/chatgpt-auth";
+import { getAdminSession } from "./admin-session";
 import { resolveEditor } from "./editor-access";
 
 export async function getApiEditor() {
-  const user = await getChatGPTUser();
+  const user = await getAdminSession();
   if (!user) return { status: "unauthenticated" as const };
   const access = await resolveEditor(user);
   if (!access) return { status: "forbidden" as const, user };

@@ -1,9 +1,11 @@
-import { eq } from "drizzle-orm";
-import { getDb } from "../../../../../db";
-import { contentItems } from "../../../../../db/schema";
 import { apiAuthError, getApiEditor } from "../../../../../lib/api-auth";
 import { cleanText, safeImageName } from "../../../../../lib/content";
-import { getMediaBucket } from "../../../../../lib/media";
+import {
+  deleteMedia,
+  readSiteState,
+  uploadMedia,
+  writeSiteState,
+} from "../../../../../lib/site-store";
 
 export const dynamic = "force-dynamic";
 const MAX_IMAGE_SIZE = 12 * 1024 * 1024;
@@ -15,12 +17,8 @@ export async function PATCH(
   const auth = await getApiEditor();
   if (auth.status !== "ok") return apiAuthError(auth.status);
   const { id } = await context.params;
-  const db = getDb();
-  const [current] = await db
-    .select()
-    .from(contentItems)
-    .where(eq(contentItems.id, id))
-    .limit(1);
+  const state = await readSiteState();
+  const current = state.contentItems.find((item) => item.id === id);
   if (!current) return Response.json({ error: "内容不存在" }, { status: 404 });
 
   const form = await request.formData();
@@ -39,41 +37,37 @@ export async function PATCH(
 
   let imageKey = current.imageKey;
   let imageName = current.imageName;
+  const previousImageKey = current.imageKey;
   let newlyUploadedKey: string | null = null;
   const shouldRemoveImage = form.get("removeImage") === "1";
   try {
     if (image instanceof File && image.size) {
       imageName = safeImageName(image.name);
       newlyUploadedKey = `${id}-${crypto.randomUUID()}-${imageName}`;
-      await getMediaBucket().put(newlyUploadedKey, await image.arrayBuffer(), {
-        httpMetadata: { contentType: image.type },
-        customMetadata: { originalName: image.name },
-      });
+      await uploadMedia(newlyUploadedKey, image);
       imageKey = newlyUploadedKey;
     } else if (shouldRemoveImage) {
       imageKey = null;
       imageName = null;
     }
 
-    await db
-      .update(contentItems)
-      .set({
-        title,
-        subtitle: subtitle || null,
-        note: note || null,
-        imageKey,
-        imageName,
-        updatedAt: Date.now(),
-      })
-      .where(eq(contentItems.id, id));
+    Object.assign(current, {
+      title,
+      subtitle: subtitle || null,
+      note: note || null,
+      imageKey,
+      imageName,
+      updatedAt: Date.now(),
+    });
+    await writeSiteState(state);
 
-    if (current.imageKey && current.imageKey !== imageKey) {
-      await getMediaBucket().delete(current.imageKey).catch(() => undefined);
+    if (previousImageKey && previousImageKey !== imageKey) {
+      await deleteMedia(previousImageKey).catch(() => undefined);
     }
     return Response.json({ ok: true });
   } catch (error) {
     if (newlyUploadedKey) {
-      await getMediaBucket().delete(newlyUploadedKey).catch(() => undefined);
+      await deleteMedia(newlyUploadedKey).catch(() => undefined);
     }
     console.error(error);
     return Response.json({ error: "修改失败，请稍后再试" }, { status: 500 });
@@ -87,17 +81,14 @@ export async function DELETE(
   const auth = await getApiEditor();
   if (auth.status !== "ok") return apiAuthError(auth.status);
   const { id } = await context.params;
-  const db = getDb();
-  const [current] = await db
-    .select()
-    .from(contentItems)
-    .where(eq(contentItems.id, id))
-    .limit(1);
+  const state = await readSiteState();
+  const current = state.contentItems.find((item) => item.id === id);
   if (!current) return Response.json({ error: "内容不存在" }, { status: 404 });
 
-  await db.delete(contentItems).where(eq(contentItems.id, id));
+  state.contentItems = state.contentItems.filter((item) => item.id !== id);
+  await writeSiteState(state);
   if (current.imageKey) {
-    await getMediaBucket().delete(current.imageKey).catch(() => undefined);
+    await deleteMedia(current.imageKey).catch(() => undefined);
   }
   return Response.json({ ok: true });
 }

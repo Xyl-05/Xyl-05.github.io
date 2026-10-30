@@ -12,8 +12,12 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const productionHost = process.env.VERCEL_PROJECT_PRODUCTION_URL;
+
 export const metadata: Metadata = {
-  metadataBase: new URL("https://yans-cute-club.rich-amber-6795.chatgpt.site"),
+  metadataBase: new URL(
+    productionHost ? `https://${productionHost}` : "https://xyl-05.github.io",
+  ),
   title: "妍的可爱宇宙 | YAN'S CLUB",
   description: "关于妍、YUY、波点、拍照和奶茶偏好的个人 IP 收藏册。",
   icons: {
