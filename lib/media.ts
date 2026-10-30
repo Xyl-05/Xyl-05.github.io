@@ -34,3 +34,12 @@ export function getBootstrapCode() {
       .ADMIN_BOOTSTRAP_CODE ?? ""
   );
 }
+
+export function getInitialOwnerEmail() {
+  return (
+    (env as unknown as { INITIAL_OWNER_EMAIL?: string }).INITIAL_OWNER_EMAIL ??
+    ""
+  )
+    .trim()
+    .toLowerCase();
+}

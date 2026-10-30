@@ -2,6 +2,7 @@ import { and, count, eq, or } from "drizzle-orm";
 import type { ChatGPTUser } from "../app/chatgpt-auth";
 import { getDb } from "../db";
 import { editorInvites, editors } from "../db/schema";
+import { getInitialOwnerEmail } from "./media";
 
 export type EditorRole = "owner" | "editor";
 
@@ -50,6 +51,13 @@ export async function resolveEditor(
       displayName: user.displayName,
       role: existing.role as EditorRole,
     };
+  }
+
+  if (
+    normalizedEmail === getInitialOwnerEmail() &&
+    !(await hasOwner())
+  ) {
+    return createFirstOwner(user);
   }
 
   const [invite] = await db
