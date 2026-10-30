@@ -28,10 +28,10 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Check out the accessible static edition
+      - name: Check out the GitHub Pages edition
         uses: actions/checkout@v4
         with:
-          ref: b65988acf3a90bb9cbf580d9a59c9f75fade0b6d
+          ref: codex/github-pages
       - uses: actions/setup-node@v4
         with:
           node-version: 22
